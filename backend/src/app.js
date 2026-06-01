@@ -25,6 +25,7 @@ app.use(helmet({
 // ── CORS ─────────────────────────────────────────────────────
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:5173',
+  'https://cdtn-frontend-viet.vercel.app', // <--- THÊM ĐƯỜNG LINK VERCEL VÀO ĐÂY
   'http://localhost:3000',
   'http://localhost:5173',
   'http://localhost:5000',
