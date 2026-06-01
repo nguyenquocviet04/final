@@ -22,35 +22,13 @@ app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' }, // Cho phép serve uploads
 }));
 
-// ── CORS ─────────────────────────────────────────────────────
-const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173',
-  'https://cdtn-frontend-viet.vercel.app', // <--- THÊM ĐƯỜNG LINK VERCEL VÀO ĐÂY
-  'http://localhost:3000',
-  'http://localhost:5173',
-  'http://localhost:5000',
-];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    // Trong development: cho phép mọi request (Postman, curl, browser console, mobile)
-    if (process.env.NODE_ENV === 'development') {
-      return callback(null, true);
-    }
-    // Trong production: chỉ cho phép origin trong danh sách
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS chặn origin: ${origin}`));
-    }
-  },
+// ── CORS (Đã fix triệt để cho Vercel) ─────────────────────────
+app.use(cors({
+  origin: true, // Tự động chấp nhận mọi request từ Frontend gọi tới
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-};
-
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Pre-flight cho tất cả routes
+}));
 
 // ── Logger ───────────────────────────────────────────────────
 if (process.env.NODE_ENV !== 'test') {
