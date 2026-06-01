@@ -36,6 +36,10 @@ axiosInstance.interceptors.response.use(
     const status = error.response?.status;
 
     if (status === 401) {
+      // Nếu đang ở trang login → không redirect, để lỗi truyền lên LoginPage.catch
+      if (window.location.pathname === '/login') {
+        return Promise.reject(error);
+      }
       // Token hết hạn → xóa auth state và về trang login
       localStorage.removeItem('cdtn-auth');
       toast.error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');

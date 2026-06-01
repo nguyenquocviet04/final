@@ -26,7 +26,6 @@ const walletSchema = yup.object({
   name:    yup.string().min(2,'Tên ít nhất 2 ký tự').required('Nhập tên ví'),
   icon:    yup.string().required('Chọn icon'),
   color:   yup.string().required('Chọn màu'),
-  balance: yup.number().min(0,'Số dư không âm').required('Nhập số dư'),
 });
 
 const transferSchema = yup.object({
@@ -72,14 +71,14 @@ const WalletsPage = () => {
     setEditData(null);
     setSelIcon('Wallet');
     setSelColor('#f59e0b');
-    resetW({ name: '', icon: 'Wallet', color: '#f59e0b', balance: 0 });
+    resetW({ name: '', icon: 'Wallet', color: '#f59e0b' });
     setWalletModal(true);
   };
   const openEdit = (w) => {
     setEditData(w);
     setSelIcon(w.icon);
     setSelColor(w.color);
-    resetW({ name: w.name, icon: w.icon, color: w.color, balance: w.balance });
+    resetW({ name: w.name, icon: w.icon, color: w.color });
     setWalletModal(true);
   };
 
@@ -89,7 +88,7 @@ const WalletsPage = () => {
         await updateWallet(editData.id, data);
         toast.success('Đã cập nhật ví');
       } else {
-        await addWallet(data);
+        await addWallet({ ...data, balance: 0 });
         toast.success('Đã thêm ví mới');
       }
       setWalletModal(false);
@@ -219,12 +218,7 @@ const WalletsPage = () => {
             <input type="text" placeholder="VD: Tiền mặt, Vietcombank..." {...regW('name')} className="input-base" />
             {errW.name && <p className="mt-1 text-xs text-expense-600">{errW.name.message}</p>}
           </div>
-          <Controller
-            name="balance" control={ctrlW}
-            render={({ field }) => (
-              <AmountInput label="Số dư hiện tại *" value={field.value} onChange={field.onChange} error={errW.balance?.message} />
-            )}
-          />
+
           {/* Icon + Color row */}
           <div className="grid grid-cols-2 gap-3">
             <div>
