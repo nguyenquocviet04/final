@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, ArrowLeftRight, PiggyBank, BarChart2,
   Bot, Tag, Wallet, Settings, ChevronLeft, ChevronRight,
-  LogOut, Sun, Moon, Heart,
+  LogOut, Sun, Moon, Heart, Repeat2,
 } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 import useUIStore   from '../../store/uiStore';
@@ -13,15 +13,16 @@ import toast from 'react-hot-toast';
 import logo from '../../assets/logo.png';
 
 const NAV_ITEMS = [
-  { to: '/dashboard',    icon: LayoutDashboard, label: 'Tổng quan'      },
-  { to: '/transactions', icon: ArrowLeftRight,  label: 'Giao dịch'      },
-  { to: '/budget',       icon: PiggyBank,       label: 'Ngân sách'      },
-  { to: '/reports',      icon: BarChart2,       label: 'Báo cáo'        },
-  { to: '/ai-chat',      icon: Bot,             label: 'AI Tư vấn'      },
-  { to: '/health-score', icon: Heart,           label: 'Sức khoẻ TC'   },
-  { to: '/categories',   icon: Tag,             label: 'Danh mục'       },
-  { to: '/wallets',      icon: Wallet,          label: 'Ví / Tài khoản'  },
-  { to: '/settings',     icon: Settings,        label: 'Cài đặt'        },
+  { to: '/dashboard',    icon: LayoutDashboard, label: 'Tổng quan'        },
+  { to: '/transactions', icon: ArrowLeftRight,  label: 'Giao dịch'        },
+  { to: '/recurring',    icon: Repeat2,         label: 'Giao dịch định kỳ' },
+  { to: '/budget',       icon: PiggyBank,       label: 'Ngân sách'        },
+  { to: '/reports',      icon: BarChart2,       label: 'Báo cáo'          },
+  { to: '/ai-chat',      icon: Bot,             label: 'AI Tư vấn'        },
+  { to: '/health-score', icon: Heart,           label: 'Sức khoẻ TC'     },
+  { to: '/categories',   icon: Tag,             label: 'Danh mục'         },
+  { to: '/wallets',      icon: Wallet,          label: 'Ví / Tài khoản'   },
+  { to: '/settings',     icon: Settings,        label: 'Cài đặt'          },
 ];
 
 const Sidebar = () => {

@@ -12,6 +12,7 @@ const LoginPage    = lazy(() => import('../pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('../pages/auth/RegisterPage'));
 const Dashboard    = lazy(() => import('../pages/DashboardPage'));
 const Transactions = lazy(() => import('../pages/TransactionsPage'));
+const Recurring    = lazy(() => import('../pages/RecurringPage'));
 const Budget       = lazy(() => import('../pages/BudgetPage'));
 const Reports      = lazy(() => import('../pages/ReportsPage'));
 const AiChat       = lazy(() => import('../pages/AiChatPage'));
@@ -44,6 +45,7 @@ const AppRouter = () => (
             <Route index                    element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard"        element={<Dashboard />} />
             <Route path="/transactions"     element={<Transactions />} />
+            <Route path="/recurring"        element={<Recurring />} />
             <Route path="/budget"           element={<Budget />} />
             <Route path="/reports"          element={<Reports />} />
             <Route path="/ai-chat"          element={<AiChat />} />
