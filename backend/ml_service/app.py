@@ -1,9 +1,5 @@
 # ml_service/app.py
 # Flask API Server - ML Service cho Hệ thống Quản lý Chi tiêu
-# Cung cấp 2 endpoints:
-#   POST /classify  - Phân loại danh mục giao dịch (Naive Bayes)
-#   GET  /suggest-budget - Gợi ý ngân sách theo K-Means
-#   POST /train     - Train lại model từ dữ liệu DB
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -12,7 +8,10 @@ from budget_suggester import BudgetSuggester
 import os
 
 app = Flask(__name__)
-CORS(app)
+
+# Cấu hình CORS an toàn: Ưu tiên lấy từ biến môi trường FRONTEND_URL, nếu không có thì cho phép tất cả ('*')
+frontend_url = os.environ.get("FRONTEND_URL", "*")
+CORS(app, resources={r"/*": {"origins": frontend_url}})
 
 # Khởi tạo 2 model
 classifier = CategoryClassifier()
@@ -75,4 +74,10 @@ def health():
     })
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    # Render sẽ cung cấp biến môi trường PORT, mặc định fallback về 5001 nếu chạy local
+    port = int(os.environ.get('PORT', 5001))
+    
+    # Tắt debug mode khi đưa lên server production
+    debug_mode = os.environ.get('FLASK_ENV') == 'development'
+    
+    app.run(host='0.0.0.0', port=port, debug=debug_mode)

@@ -26,6 +26,7 @@ const LoginPage = () => {
   const [forgotPassword, setForgotPassword] = useState('');
   const [showForgotPass, setShowForgotPass] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   const { login } = useAuthStore();
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ const LoginPage = () => {
   } = useForm({ resolver: yupResolver(schema) });
 
   const onSubmit = async (data) => {
+    setLoginError('');
     try {
       const { user, token } = await loginApi(data);
       login(user, token);
@@ -44,7 +46,7 @@ const LoginPage = () => {
       navigate(from, { replace: true });
     } catch (err) {
       const msg = err.response?.data?.message || err.message || 'Đăng nhập thất bại';
-      toast.error(msg);
+      setLoginError(msg);
     }
   };
 
@@ -119,14 +121,17 @@ const LoginPage = () => {
               </p>
             </div>
 
-            {/* Demo credentials hint */}
-            <div className="mb-6 p-3 rounded-xl bg-primary-50 dark:bg-primary-900/20 border border-primary-100 dark:border-primary-800">
-              <p className="text-xs text-primary-700 dark:text-primary-300 font-medium">
-                🔑 Demo: <span className="font-mono">test@gmail.com</span> / <span className="font-mono">123456</span>
-              </p>
-            </div>
+
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              {/* Thông báo lỗi đăng nhập */}
+              {loginError && (
+                <div className="flex items-center gap-2.5 p-3 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+                  <span className="text-red-500 text-base flex-shrink-0">⚠️</span>
+                  <p className="text-sm text-red-700 dark:text-red-300 font-medium">{loginError}</p>
+                </div>
+              )}
+
               {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
@@ -138,11 +143,13 @@ const LoginPage = () => {
                     type="email"
                     placeholder="ten@email.com"
                     {...register('email')}
+                    onChange={() => setLoginError('')}
                     className={`input-base pl-9 ${errors.email ? 'border-expense-400 focus:ring-expense-500/30' : ''}`}
                   />
                 </div>
                 {errors.email && <p className="mt-1 text-xs text-expense-600">{errors.email.message}</p>}
               </div>
+
 
               {/* Password */}
               <div>
@@ -182,19 +189,7 @@ const LoginPage = () => {
               </Button>
             </form>
 
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-100 dark:border-slate-700" />
-              </div>
-              <div className="relative flex justify-center text-xs text-slate-400">
-                <span className="px-3 bg-white dark:bg-dark-800">hoặc tiếp tục với</span>
-              </div>
-            </div>
 
-            <button className="w-full flex items-center justify-center gap-3 py-2.5 px-4 border border-slate-200 dark:border-slate-600 rounded-xl text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-              <img src="https://www.google.com/favicon.ico" alt="Google" className="w-4 h-4" />
-              Google
-            </button>
           </div>
         </div>
       </div>
